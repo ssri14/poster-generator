@@ -89,20 +89,24 @@ The CI workflow runs on every `push` and `pull_request`. The release workflow ru
 
 ## Release Notes
 
+The sections below summarize the main milestones currently published from this repository.
+
 ### v1.0.0
 
-- initial Streamlit app
-- OpenRouter text generation for poster content
-- Markdown export
-- CI and release workflows
+- initial Streamlit application for poster-content generation
+- OpenRouter text generation for structured poster copy
+- Markdown output for easy reuse
+- CI and GitHub release workflows
 
 ### v1.1.0
 
-- improved flyer-style PDF export
+- flyer-style PDF export
+- improved printable layout over the earlier markdown-style export
+- continued support for generated poster copy and Markdown output
 
 ### v1.2.0
 
 - optional OpenRouter image generation
 - image preview and download in the UI
 - PDF export can include generated artwork
-- README refreshed for general project use
+- refreshed README and project documentation
