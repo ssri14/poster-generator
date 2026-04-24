@@ -1,82 +1,56 @@
 # Poster Generator
 
-Poster Generator is a classroom-friendly CI/CD demo project built with Python and Streamlit. It uses the OpenRouter chat completion API to generate poster-ready content from a topic, audience, tone, and event details.
+Poster Generator is a Streamlit application that turns a short creative brief into poster-ready copy and a printable PDF flyer. It uses OpenRouter for text generation and produces structured content that can be reused in design tools or shared directly.
 
-## Project Purpose
+## Features
 
-This project demonstrates:
+- generate poster copy from a topic, audience, tone, event details, and call to action
+- produce structured output for title, tagline, body copy, highlights, layout guidance, and image prompt
+- copy the generated content as Markdown
+- export a flyer-style PDF from the generated poster content
+- run automated tests in GitHub Actions on pushes and pull requests
+- create versioned release artifacts from Git tags
 
-- a simple Streamlit application
-- clean separation between UI, prompt-building, and API logic
-- automated testing with `pytest`
-- continuous integration with GitHub Actions
-- release automation with GitHub Releases
+## Requirements
 
-## Setup
+- Python 3.12 or newer is recommended
+- an OpenRouter API key
 
-1. Create or activate a Python virtual environment.
-2. Install dependencies:
+## Installation
+
+Create or activate a virtual environment, then install dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## Running Locally
+## Running The App
 
-Start the Streamlit app:
+Launch the Streamlit server with:
 
 ```bash
 streamlit run app.py
 ```
 
-Then open the local URL shown by Streamlit in your browser.
+Streamlit will print a local URL, usually `http://localhost:8501`.
 
-## Using Your OpenRouter API Key
+## Using OpenRouter
 
-- Enter your OpenRouter API key in the app UI.
-- The key is not stored in the repository.
-- The app sends the key only in the request to OpenRouter.
-- For classroom demos, students can use their own key at runtime.
+The application expects the OpenRouter API key to be entered in the UI at runtime.
 
-## PDF Export
+- the API key is not committed to the repository
+- the application does not persist the API key in project files
+- the app currently uses a text model to generate poster content
 
-- The app can export the generated markdown output as a PDF.
-- The PDF is generated locally from the poster content shown in the app.
-- This gives students a quick printable artifact for demos.
+For text generation, a general chat model such as `openai/gpt-4o-mini` works well.
 
-## Image Generation Note
+## Output
 
-- OpenRouter does support image-generation models.
-- This release keeps image generation as a future enhancement and currently produces a suggested image prompt.
-- That keeps the classroom flow simpler while still showing how text output can drive later visual design.
+Each run can produce:
 
-## Release Plan
-
-### v1.0.0
-
-- poster content generation
-- clean Streamlit interface
-- markdown output for easy copy/paste
-- basic error handling
-- CI workflow
-- GitHub release workflow
-
-### v1.1.0
-
-- export generated poster content as PDF
-- document OpenRouter image-generation support for a future enhancement
-- improve prompt options and layout suggestions
-- expand test coverage
-
-## CI/CD Classroom Demonstration Flow
-
-1. Make a small code change locally.
-2. Run tests with `pytest`.
-3. Push a branch or open a pull request to trigger CI.
-4. Show GitHub Actions running tests on `push` and `pull_request`.
-5. Create a tag such as `v1.0.0`.
-6. Push the tag to trigger the release workflow.
-7. Show the generated GitHub Release and attached zip artifact.
+- poster-ready text content
+- a Markdown version of that content
+- a printable PDF flyer
 
 ## Project Structure
 
@@ -88,11 +62,39 @@ Then open the local URL shown by Streamlit in your browser.
 ├── poster_prompt.py
 ├── requirements.txt
 ├── tests
-│   ├── test_pdf_generator.py
+│   ├── conftest.py
 │   ├── test_openrouter_client.py
+│   ├── test_pdf_generator.py
 │   └── test_prompt.py
 └── .github
     └── workflows
         ├── ci.yml
         └── release.yml
 ```
+
+## Development
+
+Run the test suite with:
+
+```bash
+pytest
+```
+
+The CI workflow runs on every `push` and `pull_request`. The release workflow runs when a tag matching `v*` is pushed and publishes a zip artifact through GitHub Releases.
+
+## Release Notes
+
+The sections below summarize the main milestones currently published from this repository.
+
+### v1.0.0
+
+- initial Streamlit application for poster-content generation
+- OpenRouter text generation for structured poster copy
+- Markdown output for easy reuse
+- CI and GitHub release workflows
+
+### v1.1.0
+
+- flyer-style PDF export
+- improved printable layout over the earlier markdown-style export
+- continued support for generated poster copy and Markdown output
