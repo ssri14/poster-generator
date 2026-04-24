@@ -38,6 +38,18 @@ Then open the local URL shown by Streamlit in your browser.
 - The app sends the key only in the request to OpenRouter.
 - For classroom demos, students can use their own key at runtime.
 
+## PDF Export
+
+- The app can export the generated markdown output as a PDF.
+- The PDF is generated locally from the poster content shown in the app.
+- This gives students a quick printable artifact for demos.
+
+## Image Generation Note
+
+- OpenRouter does support image-generation models.
+- This release keeps image generation as a future enhancement and currently produces a suggested image prompt.
+- That keeps the classroom flow simpler while still showing how text output can drive later visual design.
+
 ## Release Plan
 
 ### v1.0.0
@@ -51,7 +63,8 @@ Then open the local URL shown by Streamlit in your browser.
 
 ### v1.1.0
 
-- add OpenRouter credit or rate-limit checks
+- export generated poster content as PDF
+- document OpenRouter image-generation support for a future enhancement
 - improve prompt options and layout suggestions
 - expand test coverage
 
@@ -71,9 +84,11 @@ Then open the local URL shown by Streamlit in your browser.
 .
 ├── app.py
 ├── openrouter_client.py
+├── pdf_generator.py
 ├── poster_prompt.py
 ├── requirements.txt
 ├── tests
+│   ├── test_pdf_generator.py
 │   ├── test_openrouter_client.py
 │   └── test_prompt.py
 └── .github

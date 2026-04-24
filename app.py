@@ -8,6 +8,7 @@ from typing import Any
 import streamlit as st
 
 from openrouter_client import OpenRouterClient, OpenRouterClientError
+from pdf_generator import generate_pdf_from_markdown
 from poster_prompt import build_markdown_output, build_messages
 
 
@@ -45,6 +46,9 @@ def _normalize_poster_data(payload: Any) -> dict[str, Any]:
 
 
 def _render_poster_output(data: dict[str, Any]) -> None:
+    markdown_output = build_markdown_output(data)
+    pdf_bytes = generate_pdf_from_markdown(markdown_output, title=str(data["poster_title"]))
+
     st.success("Poster content generated successfully.")
     st.subheader("Poster Title")
     st.write(data["poster_title"])
@@ -69,7 +73,14 @@ def _render_poster_output(data: dict[str, Any]) -> None:
     st.code(data["suggested_image_prompt"], language="text")
 
     st.subheader("Copy-friendly Markdown Output")
-    st.code(build_markdown_output(data), language="markdown")
+    st.code(markdown_output, language="markdown")
+
+    st.download_button(
+        "Download Poster PDF",
+        data=pdf_bytes,
+        file_name="poster-content.pdf",
+        mime="application/pdf",
+    )
 
 
 def main() -> None:
@@ -84,6 +95,10 @@ def main() -> None:
             " poster-ready copy using the model you choose."
         )
         st.info("Your OpenRouter API key is used only for this request and is not stored in code.")
+        st.caption(
+            "OpenRouter supports image-generation models too, but this release focuses on"
+            " content generation plus PDF export."
+        )
 
     with st.form("poster_form"):
         api_key = st.text_input("OpenRouter API Key", type="password")
