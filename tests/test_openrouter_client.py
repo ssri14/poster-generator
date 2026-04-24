@@ -88,3 +88,44 @@ def test_generate_poster_content_raises_for_unexpected_json_structure() -> None:
                 model_name="openai/gpt-4o-mini",
                 messages=[{"role": "user", "content": "Create a poster"}],
             )
+
+
+def test_generate_poster_image_returns_data_url() -> None:
+    client = OpenRouterClient(api_key="test-key")
+    response = _mock_response(
+        json_data={
+            "choices": [
+                {
+                    "message": {
+                        "images": [
+                            {
+                                "image_url": {
+                                    "url": "data:image/png;base64,abc123"
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    )
+
+    with patch("openrouter_client.requests.post", return_value=response):
+        result = client.generate_poster_image(
+            model_name="google/gemini-2.5-flash-image",
+            prompt="Create a bright event poster illustration",
+        )
+
+    assert result == "data:image/png;base64,abc123"
+
+
+def test_generate_poster_image_raises_for_missing_image_data() -> None:
+    client = OpenRouterClient(api_key="test-key")
+    response = _mock_response(json_data={"choices": [{"message": {"images": []}}]})
+
+    with patch("openrouter_client.requests.post", return_value=response):
+        with pytest.raises(OpenRouterClientError, match="unexpected image response"):
+            client.generate_poster_image(
+                model_name="google/gemini-2.5-flash-image",
+                prompt="Create a bright event poster illustration",
+            )
